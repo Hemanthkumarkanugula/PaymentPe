@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Phone Pe - DTH Recharge</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: #f4f1fa;
+      color: #2b2b3a;
+      min-height: 100vh;
+    }
+    header {
+      background: linear-gradient(135deg, #5f259f, #8a4fd1);
+      color: #fff;
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    header h1 { font-size: 1.4rem; }
+    header a { color: #fff; text-decoration: none; font-size: 0.95rem; }
+    main { max-width: 480px; margin: 30px auto; padding: 0 20px; }
+    .box {
+      background: #fff;
+      border-radius: 14px;
+      padding: 28px;
+      box-shadow: 0 6px 20px rgba(95, 37, 159, 0.12);
+    }
+    h2 { color: #5f259f; margin-bottom: 14px; }
+    label { display: block; margin: 14px 0 6px; font-weight: 600; font-size: 0.9rem; }
+    input, select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+    input:focus, select:focus { outline: 2px solid #8a4fd1; border-color: transparent; }
+    .packs { display: flex; flex-direction: column; gap: 10px; margin-top: 6px; }
+    .pack {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border: 2px solid #e3d9f2;
+      border-radius: 10px;
+      padding: 12px 16px;
+      cursor: pointer;
+      background: #fff;
+      transition: 0.2s;
+    }
+    .pack:hover { border-color: #8a4fd1; }
+    .pack.selected { border-color: #5f259f; background: #f4f1fa; }
+    .pack .name { font-weight: 600; }
+    .pack .info { font-size: 0.8rem; color: #666; margin-top: 2px; }
+    .pack .price { font-weight: 700; color: #5f259f; font-size: 1.1rem; }
+    button {
+      width: 100%;
+      margin-top: 24px;
+      padding: 14px;
+      border: none;
+      border-radius: 999px;
+      background: #5f259f;
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    button:hover { background: #4a1c7e; }
+    .message {
+      display: none;
+      margin-top: 20px;
+      padding: 16px;
+      border-radius: 8px;
+      text-align: center;
+      font-weight: 600;
+    }
+    .message.ok { display: block; background: #e8f5e9; color: #2e7d32; }
+    .message.error { display: block; background: #ffebee; color: #d32f2f; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>DTH Recharge</h1>
+    <a href="index.html">&larr; Home</a>
+  </header>
+
+  <main>
+    <div class="box">
+      <h2>Renew your DTH</h2>
+
+      <label for="provider">DTH Provider</label>
+      <select id="provider">
+        <option value="">Select provider</option>
+        <option>Tata Play</option>
+        <option>Airtel Digital TV</option>
+        <option>Dish TV</option>
+        <option>Sun Direct</option>
+        <option>d2h</option>
+      </select>
+
+      <label for="customerId">Customer ID / Subscriber ID</label>
+      <input type="text" id="customerId" placeholder="Enter your customer ID" maxlength="12">
+
+      <label>Choose a Pack</label>
+      <div class="packs" id="packs">
+        <div class="pack" data-amount="250">
+          <div>
+            <div class="name">Basic Pack</div>
+            <div class="info">150+ channels · 1 month</div>
+          </div>
+          <div class="price">₹250</div>
+        </div>
+        <div class="pack" data-amount="450">
+          <div>
+            <div class="name">Family Pack</div>
+            <div class="info">250+ channels with HD · 1 month</div>
+          </div>
+          <div class="price">₹450</div>
+        </div>
+        <div class="pack" data-amount="1200">
+          <div>
+            <div class="name">Sports + Movies</div>
+            <div class="info">350+ channels with HD · 3 months</div>
+          </div>
+          <div class="price">₹1,200</div>
+        </div>
+      </div>
+
+      <button id="dthBtn">Recharge DTH</button>
+      <div class="message" id="message"></div>
+    </div>
+  </main>
+
+  <script>
+    const packs = document.querySelectorAll(".pack");
+    const message = document.getElementById("message");
+    let selectedAmount = null;
+    let selectedName = "";
+
+    // highlight the chosen pack
+    packs.forEach(function (pack) {
+      pack.addEventListener("click", function () {
+        packs.forEach(function (p) { p.classList.remove("selected"); });
+        pack.classList.add("selected");
+        selectedAmount = pack.dataset.amount;
+        selectedName = pack.querySelector(".name").textContent;
+      });
+    });
+
+    // practice only: no real recharge happens
+    document.getElementById("dthBtn").addEventListener("click", function () {
+      const provider = document.getElementById("provider").value;
+      const customerId = document.getElementById("customerId").value.trim();
+
+      if (!provider) {
+        showMessage("Please select your DTH provider.", "error");
+      } else if (!/^\d{8,12}$/.test(customerId)) {
+        showMessage("Please enter a valid customer ID (8 to 12 digits).", "error");
+      } else if (!selectedAmount) {
+        showMessage("Please choose a pack.", "error");
+      } else {
+        showMessage("✅ " + selectedName + " (₹" + selectedAmount + ") recharged on " + provider + " (demo only)", "ok");
+      }
+    });
+
+    function showMessage(text, type) {
+      message.className = "message " + type;
+      message.textContent = text;
+    }
+  </script>
+</body>
+</html>
