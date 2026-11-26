@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Phone Pe - Check Balance</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: #f4f1fa;
+      color: #2b2b3a;
+      min-height: 100vh;
+    }
+    header {
+      background: linear-gradient(135deg, #5f259f, #8a4fd1);
+      color: #fff;
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    header h1 { font-size: 1.4rem; }
+    header a { color: #fff; text-decoration: none; font-size: 0.95rem; }
+    main { max-width: 480px; margin: 30px auto; padding: 0 20px; }
+    .balance-card {
+      background: #fff;
+      border-radius: 14px;
+      padding: 28px;
+      text-align: center;
+      box-shadow: 0 6px 20px rgba(95, 37, 159, 0.12);
+      margin-bottom: 24px;
+    }
+    .balance-card p { color: #666; margin-bottom: 8px; }
+    .amount { font-size: 2.6rem; font-weight: 700; color: #5f259f; }
+    .amount.hidden { letter-spacing: 4px; }
+    .toggle {
+      margin-top: 16px;
+      padding: 10px 24px;
+      border: none;
+      border-radius: 999px;
+      background: #5f259f;
+      color: #fff;
+      font-size: 0.95rem;
+      cursor: pointer;
+    }
+    .toggle:hover { background: #4a1c7e; }
+    h2 { margin-bottom: 12px; color: #5f259f; font-size: 1.1rem; }
+    .history {
+      background: #fff;
+      border-radius: 14px;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+      list-style: none;
+    }
+    .history li {
+      display: flex;
+      justify-content: space-between;
+      padding: 14px 18px;
+      border-bottom: 1px solid #eee;
+    }
+    .history li:last-child { border-bottom: none; }
+    .debit { color: #d32f2f; font-weight: 600; }
+    .credit { color: #2e7d32; font-weight: 600; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Check Balance</h1>
+    <a href="index.html">&larr; Home</a>
+  </header>
+
+  <main>
+    <section class="balance-card">
+      <p>Available Balance</p>
+      <div class="amount hidden" id="amount">₹ ••••••</div>
+      <button class="toggle" id="toggleBtn">Show Balance</button>
+    </section>
+
+    <h2>Recent Transactions</h2>
+    <ul class="history">
+      <li><span>Mobile Recharge</span><span class="debit">- ₹299</span></li>
+      <li><span>DTH Renewal</span><span class="debit">- ₹450</span></li>
+      <li><span>Money Received</span><span class="credit">+ ₹2,000</span></li>
+      <li><span>Rent Payment</span><span class="debit">- ₹8,000</span></li>
+    </ul>
+  </main>
+
+  <script>
+    const balance = 12450.75;  // sample amount for practice
+    const amountEl = document.getElementById("amount");
+    const btn = document.getElementById("toggleBtn");
+    let visible = false;
+
+    btn.addEventListener("click", function () {
+      visible = !visible;
+      if (visible) {
+        amountEl.textContent = "₹ " + balance.toLocaleString("en-IN", { minimumFractionDigits: 2 });
+        amountEl.classList.remove("hidden");
+        btn.textContent = "Hide Balance";
+      } else {
+        amountEl.textContent = "₹ ••••••";
+        amountEl.classList.add("hidden");
+        btn.textContent = "Show Balance";
+      }
+    });
+  </script>
+</body>
+</html>
